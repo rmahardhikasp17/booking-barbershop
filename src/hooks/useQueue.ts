@@ -61,7 +61,10 @@ export function useQueue() {
   const nowServing = sortedQueues.find(q => q.status === 'Processing');
   const nextQueue = sortedQueues.find(q => q.status === 'Waiting' || q.status === 'Calling');
 
-  return { queues: sortedQueues, nowServing, nextQueue, loading, refetch: fetchQueues };
+  const totalWaiting = queues.filter(q => q.status === 'Waiting' || q.status === 'Calling').length;
+  const lastQueueNumber = queues.length > 0 ? Math.max(...queues.map(q => q.queue_number)) : 0;
+
+  return { queues: sortedQueues, nowServing, nextQueue, loading, refetch: fetchQueues, totalWaiting, lastQueueNumber };
 }
 
 export function useTicket(ticketId: string | null) {
